@@ -59,8 +59,8 @@
           console.log('res = ', res);
           if(res.data.ok) this.$router.push('/noticeList')
         })
-        .catch(err => {
-          console.log(err);
+        .catch((res, err) => {
+          console.log(res);
           alert('error!')
         })
         .finally(() => {

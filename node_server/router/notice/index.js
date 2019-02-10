@@ -3,17 +3,53 @@ const router = express.Router()
 const connection = require('../config/database.js')
 
 router.get('/list', (req, res) => {
+
   console.log('[[[[ NOTICE LIST ]]]]')
+
+  connection.query(
+    `SELECT 
+            NOTICE_TP,
+            INIT,
+            SUBJ, 
+            CONTS, 
+            REGR, 
+            DATE_FORMAT(REG_DT, "%Y-%m-%d %H:%i") REG_DT, 
+            URDR, 
+            DATE_FORMAT(UPD_DT, "%Y-%m-%d %H:%i") UPD_DT 
+            FROM TB_NOTICE ORDER BY NOTICE_MMG_NO 
+            DESC`
+    // `SELECT 
+    //                   NOTICE_MNG_NO
+    //                 , NOTICE_TP
+    //                 , SUBJ
+    //                 , CONTS
+    //                 , REGR
+    //                 , DATE_FORMAT(REG_DT, "%Y-%m-%d %H:%i") REG_DT
+    //                 , URDR
+    //                 , DATE_FORMAT(UPD_DT, "%Y-%m-%d %H:%i") UPD_DT
+    //                 FROM TB_NOTICE
+    //                 ORDER BY NOTICE_MNG_NO DESC`
+    , (err, rows) => {
+    if(err) return res.status(401).json({
+      err : '에러발생'
+    })
+    
+    if(rows.length){
+      console.log(rows)
+  
+      const resData = {}
+
+      resData.ok = true;
+      resData.body = rows;
+
+      res.status(200)
+      res.json(resData)
+    }
+
+  })
 });
 
-connection.query('SELECT * FROM TB_NOTICE', (err, rows) => {
-  if(err) return res.status(401).json({
-    err : '에러발생'
-  })
-  if(rows.length){
-    console.log(rows)
-  }
-})
+
 
 router.post('/register', (req, res) => {
   console.log('[[[[[ NOTICE REGISTER]]]]]');
@@ -35,7 +71,7 @@ router.post('/register', (req, res) => {
   // dpTp query err
   connection.query(`INSERT INTO TB_NOTICE
                     (
-                       SUBJ
+                        SUBJ
                       , INIT
                       , CONTS
                       , REGR
@@ -66,7 +102,6 @@ router.post('/register', (req, res) => {
 
       resData.insertId = rows.insertId
       resData.ok = true
-
       res.status(200)
       res.end(JSON.stringify(resData))
     }

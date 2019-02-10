@@ -17,7 +17,20 @@
 </template>
 
 <script>
+  import axios from 'axios';
   export default {
+    created(){
+      axios.get('http://localhost:3000/notice/list')
+      .then(res => {
+        
+      })
+      .catch(res => {
+
+      })
+      .finally(res => {
+        
+      })
+    },
     methods:{
       onSubmit(){
         //console.log('onSubmit');

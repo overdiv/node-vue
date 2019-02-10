@@ -57,8 +57,7 @@
         })
         .then(res => {
           console.log('res = ', res);
-          
-          this.$router.push('/noticeList')
+          if(res.data.ok) this.$router.push('/noticeList')
         })
         .catch(err => {
           console.log(err);
@@ -88,7 +87,7 @@
           })
       }
     }
-  }
+  }  
 </script>
 <style>
 

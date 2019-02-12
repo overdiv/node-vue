@@ -7,7 +7,7 @@ router.get('/list', (req, res) => {
   console.log('[[[[ NOTICE LIST ]]]]')
 
   connection.query(
-    `SELECT 
+            `SELECT 
             NOTICE_TP,
             INIT,
             SUBJ, 
@@ -17,22 +17,8 @@ router.get('/list', (req, res) => {
             URDR, 
             DATE_FORMAT(UPD_DT, "%Y-%m-%d %H:%i") UPD_DT 
             FROM TB_NOTICE ORDER BY NOTICE_MMG_NO 
-            DESC`
-    // `SELECT 
-    //                   NOTICE_MNG_NO
-    //                 , NOTICE_TP
-    //                 , SUBJ
-    //                 , CONTS
-    //                 , REGR
-    //                 , DATE_FORMAT(REG_DT, "%Y-%m-%d %H:%i") REG_DT
-    //                 , URDR
-    //                 , DATE_FORMAT(UPD_DT, "%Y-%m-%d %H:%i") UPD_DT
-    //                 FROM TB_NOTICE
-    //                 ORDER BY NOTICE_MNG_NO DESC`
-    , (err, rows) => {
-    if(err) return res.status(401).json({
-      err : '에러발생'
-    })
+            DESC` , (err, rows) => {
+    if(err) return res.status(401).json({err : '에러발생'})
     
     if(rows.length){
       console.log(rows)
@@ -49,9 +35,8 @@ router.get('/list', (req, res) => {
   })
 });
 
-
-
 router.post('/register', (req, res) => {
+  
   console.log('[[[[[ NOTICE REGISTER]]]]]');
 
   const form = req.body.form
@@ -92,9 +77,7 @@ router.post('/register', (req, res) => {
     console.log('rows =', rows);
     console.log('rows =', err);
 
-    if (err) return res.status(401).end(JSON.stringify({
-      err: '에러발생'
-    }))
+    if (err) return res.status(401).end(JSON.stringify({err: '에러발생'}))
 
     if (rows.affectedRows > 0) {
 

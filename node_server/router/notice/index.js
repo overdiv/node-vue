@@ -8,16 +8,17 @@ router.get('/list', (req, res) => {
 
   connection.query(
             `SELECT 
-            NOTICE_TP,
-            INIT,
-            SUBJ, 
-            CONTS, 
-            REGR, 
-            DATE_FORMAT(REG_DT, "%Y-%m-%d %H:%i") REG_DT, 
-            URDR, 
-            DATE_FORMAT(UPD_DT, "%Y-%m-%d %H:%i") UPD_DT 
-            FROM TB_NOTICE ORDER BY NOTICE_MMG_NO 
-            DESC` , (err, rows) => {
+             NOTICE_MNG_NO
+             , NOTICE_TP
+             , SUBJ
+             , CONTS
+             , REGR
+             , DATE_FORMAT(REG_DT, "%Y-%m-%d %H:%i") REG_DT
+             , URDR
+             , DATE_FORMAT(UPD_DT, "%Y-%m-%d %H:%i") UPD_DT
+             FROM TB_NOTICE
+             ORDER BY NOTICE_MNG_NO DESC`
+            , (err, rows) => {
     if(err) return res.status(401).json({err : '에러발생'})
     
     if(rows.length){
@@ -41,14 +42,7 @@ router.post('/register', (req, res) => {
 
   const form = req.body.form
 
-  const {
-    subj,
-    dpTp,
-    init,
-    conts
-  } = form
-
-
+  const {subj, dpTp, init, conts} = form
 
   console.log(form);
   console.log(dpTp)
@@ -56,6 +50,7 @@ router.post('/register', (req, res) => {
   // dpTp query err
   connection.query(`INSERT INTO TB_NOTICE
                     (
+                        NOTICE_TP,
                         SUBJ
                       , INIT
                       , CONTS
@@ -69,13 +64,16 @@ router.post('/register', (req, res) => {
                           ?
                         , ?
                         , ?
+                        , ?
                         , 'admin'
                         , now()
                         , 'admin'
                         , now()
-                      )`, [ subj, init+'', conts], (err, rows) => {
-    console.log('rows =', rows);
-    console.log('rows =', err);
+                      )`, 
+                      [dpTp, subj, init+'',  conts],
+                      (err, rows) => {
+      console.log('rows =', rows);
+      console.log('rows =', err);
 
     if (err) return res.status(401).end(JSON.stringify({err: '에러발생'}))
 

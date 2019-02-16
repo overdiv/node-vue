@@ -18,6 +18,18 @@
 <script>
 
 export default {
- 
+  data() {
+    return {
+
+    }
+  },
+  methoed: {
+    roro() {
+      console.log(this.$route);
+    }
+  },
+  mounted() {
+    console.log(this.$route);
+  }
 }
 </script>

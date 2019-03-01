@@ -3,6 +3,9 @@
     <el-table :data="noticeData">
       <el-table-column prop="noticeMngNo" label="No" width="70" align="center"></el-table-column>
       <el-table-column prop="subj" label="제목" header-align="center">
+        <template slot-scope="scope">
+          <span class="link" @click="oneDetail(scope.row.noticeMngNo)">{{scope.row.subj}}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="noticeTp" align="center" label="구분" width="150">
       </el-table-column>
@@ -44,6 +47,13 @@
       onSubmit(){
         //console.log('onSubmit');
         this.$router.push('/noticeRegister');
+      },
+      oneDetail(no){
+        console.log('no =', no);
+        this.$router.push({
+          path: '/noticeDetail',
+          query: {no:no}
+        });
       }
     }
   }

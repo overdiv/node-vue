@@ -89,4 +89,34 @@ router.post('/register', (req, res) => {
   })
 })
 
+router.get('/detail/:no', (req, res) => {
+  console.log('[[[[ NOTICE DETAIL ]]]]')
+  console.log('no = ', req.params.no)
+  const no = req.params.no;
+  connection.query(`
+  SELECT * FROM TB_NOTICE WHERE NOTICE_MNG_NO = ?
+  `,
+  [no], (err, rows) => {
+    if (err) return res.status(401).end(JSON.stringify({err:'에러발생'}))
+
+    console.log(rows[0])
+
+    const resData = {}
+
+    if (rows[0]) {
+
+      resData.ok = true
+      resData.body = rows[0]
+
+      res.status(200)
+      res.json(resData)
+      
+    } else {
+      resData.ok = true
+      res.status(200)
+      res.json(resData)
+    }
+  })
+})
+
 module.exports = router

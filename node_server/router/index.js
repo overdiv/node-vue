@@ -3,8 +3,10 @@ const router = express.Router()
 
 const notice = require('./notice')
 
+const login = require('./login')
 
 router.use('/notice', notice)
 
-module.exports = router
+router.use('/login', login)
 
+module.exports = router

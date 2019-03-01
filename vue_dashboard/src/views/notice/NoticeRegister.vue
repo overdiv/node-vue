@@ -32,6 +32,7 @@
 <script>
   import { VueEditor } from 'vue2-editor'
   import axios from 'axios'
+  import camelCase from 'camelcase-keys'
   export default {
     components: {
       VueEditor
@@ -43,7 +44,8 @@
           dpTp:'',
           init:[],
           conts:'',
-        }
+        },
+        no: this.$route.query.no
       }
     },
     methods:{
@@ -85,6 +87,34 @@
             })
             console.log(err);
           })
+      }
+    },
+    created(){
+      if(this.no){
+        axios.get(`http://localhost:3000/notice/detail/${this.no}`)
+        .then(res => {
+          console.log('res = ', res)
+          const data = camelCase(res.data.body)
+          console.log('data = ', data)
+          this.form.subj = data.subj
+          this.form.conts = data.conts
+          this.form.dpTp = data.noticeTp
+          this.form.init = data.init
+
+          console.log(data.init);
+          if(data.init !== ''){
+            this.form.init = data.init.split(',');
+            console.log(this.form.init);
+          }else{
+            this.form.init = []
+          }
+        })
+        .catch( (res, err) => {
+          console.log(err);
+        })
+        .finally(_ => {
+          
+        })
       }
     }
   }  

@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions,mappState, mapMutations } from 'vuex'
 export default {
  
   name: 'Login',
@@ -79,10 +79,27 @@ export default {
       },
       immediate: true
     },
+    userId(id) {
+      console.log('watch id = ', id);
+      this.$router.push('/')
+    }
+  },
+  computed: {
+    ...mapState({
+      userId: state => state.user.id,
+      loading: state => state.user.loading
+    }),
+    // userId(id) {
+    //   console.log('computed = ', id);
+    //     this.$router.push('/')
+    // }
   },
   methods: {
     ...mapActions([
       'Login'
+    ]),
+    ...mapMutations([
+      'SET_LOADING'
     ]),
     showPwd() {
       if (this.pwdType === 'password') {
@@ -96,9 +113,22 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if(valid){
           console.log('===벨류데이션 체크===');
-          this.loading = true
+
+          console.log(this.$store.state.loading);
+
+          // this.$store.state.user.loading = true
+
+          // this.$store.commit('SET_LOADING', true)
+
+          this.SET_LOADING(true)
+
+          // return
+
+          console.log(this.$store.state.loading);
 
           console.log('this.loginForm = ', this.loginForm);
+
+          console.log(this.loading);
           // this.$store.dispatch('Login', this.loginForm);
 
           this.Login(this.loginForm)
@@ -106,7 +136,9 @@ export default {
         }
       })
     },
-    
+  },
+   mounted() {
+    console.log('mounted', this.loading, this.userId);
   }
 }
 </script>

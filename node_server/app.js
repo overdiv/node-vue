@@ -6,8 +6,17 @@ const router = require('./router')
 
 // middle ware 
 app.use(cors) // 크로스도메인 방지
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended:true}))
+app.use(express.static('public'))
+
+app.use(bodyParser.json({
+  extended: true,
+  limit: '100mb'
+}))
+
+app.use(bodyParser.urlencoded({
+  extended:true,
+  limit: '100mb'
+}))
 app.use(router)
 
 app.use((req, res, next) => {

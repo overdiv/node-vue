@@ -12,20 +12,82 @@
       <el-table-column prop="regDt" align="center" label="등록일" width="220">
       </el-table-column>
     </el-table>
+
+     <el-pagination layout="prev, pager, next" 
+      :page-size="pageSize" 
+      :total="total"
+      :current-page.sync="currentPage" 
+      @current-change="onPageChange"> 
+    </el-pagination>
     
     <div class="bottomBtns">
-      <el-button @click="onSubmit" type="primary">공지사항 등록</el-button>
+      <el-button @click="$router.push('/notice/register')" type="primary">공지사항 등록</el-button>
     </div>
   </section>
 </template>
 
 <script>
   import axios from 'axios';
+  import { noticeList } from '@/api/app.js'
   import camelCase from 'camelcase-keys';
+  import Cookies from 'js-cookie'
   export default {
     data(){
       return {
-        noticeData: []
+        noticeOption: '',
+        noticeData: [],
+        total: 1,
+        pageSize: 10,
+        currentPage: 1,
+        options: [{
+          value: '10',
+          label: '전체'
+        }, {
+          value: '20',
+          label: '제목'
+        }, {
+          value: '30',
+          label: '내용'
+        }],
+        noticeOption: '10',
+        conts: ''
+      }
+    },
+    methods:{
+      onList() {
+        // axios.get('http://localhost:3000/notice/list')
+        noticeList()
+        .then(res => {
+          console.log('res = ', res.data.body);
+          const data = camelCase(res.data.body);
+          console.log('res = ', data);
+
+          this.total = data.length
+
+          let currentMaxLow = this.currentPage * this.pageSize
+          let currentMinLow = currentMaxLow - this.pageSize
+
+          console.log(currentMaxLow, currentMinlow);
+
+          this.noticeData = data.slice(currentMinLow, currentMaxLow)
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+
+        })
+      },
+      onSubmit(){
+        //console.log('onSubmit');
+        this.$router.push('/notice/register');
+      },
+      oneDetail(no){
+        console.log('no =', no);
+        this.$router.push({
+          path: '/notice/detail',
+          query: {no:no}
+        });
       }
     },
     created(){
@@ -43,18 +105,9 @@
         
       })
     },
-    methods:{
-      onSubmit(){
-        //console.log('onSubmit');
-        this.$router.push('/notice/register');
-      },
-      oneDetail(no){
-        console.log('no =', no);
-        this.$router.push({
-          path: '/notice/detail',
-          query: {no:no}
-        });
-      }
-    }
+    mounted() {
+      this.onList()
+    },
+    
   }
 </script>

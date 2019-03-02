@@ -11,8 +11,11 @@
         <el-dropdown-item>
           <router-link class="inlineBlock" to="/">Home</router-link>
         </el-dropdown-item>
-        <el-dropdown-item divided>
-          <span style="display:block;">LogOut</span>
+        <el-dropdown-item v-if="isLogin" divided>
+          <span style="display:block;" @click="logout">LogOut</span>
+        </el-dropdown-item>
+        <el-dropdown-item v-else divided>
+          <span style="display:block;" @click="$router.push('/login')">Login</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -20,10 +23,17 @@
 </template>
 
 <script>
-
+import Cookies from 'js-cookie'
 export default {
+  data() {
+    return {
+      isLogin: Cookies.get('token')
+    }
+  },
   methods: {
     logout() {
+      Cookies.remove('token')
+      location.reload()
     }
   }
 }

@@ -54,7 +54,7 @@
     methods:{
       onUpdate(){
         this.$router.push({
-          path:'/noticeRegister',
+          path:'/notice/register',
           query: {no:this.no}
         })
       }

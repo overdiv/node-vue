@@ -89,6 +89,22 @@ router.post('/register', (req, res) => {
   })
 })
 
+router.post('/modify', (req,res) => {
+  console.log('[[[[[ NOTICE MODIFY ]]]]]');
+
+  console.log('req.body.form = ', req.body.form);
+  // console.log('req.file =' req.file);
+
+  const form = JSON.parse(req.body.form);
+
+  let {subj, dpTp, init, conts} = form;
+
+  const no = req.body.no;
+
+  return
+
+})
+
 router.get('/detail/:no', (req, res) => {
   console.log('[[[[ NOTICE DETAIL ]]]]')
   console.log('no = ', req.params.no)

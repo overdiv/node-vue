@@ -69,7 +69,7 @@ const routes = [
      hidden: true,
      path: 'detail',
      name: 'NoticeDetail',
-     component: () => import('@/views/notice/noticedetail')
+     component: () => import('@/views/notice/NoticeDetail')
    }
   ]
  },

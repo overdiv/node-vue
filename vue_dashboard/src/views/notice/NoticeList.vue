@@ -46,12 +46,12 @@
     methods:{
       onSubmit(){
         //console.log('onSubmit');
-        this.$router.push('/noticeRegister');
+        this.$router.push('/notice/register');
       },
       oneDetail(no){
         console.log('no =', no);
         this.$router.push({
-          path: '/noticeDetail',
+          path: '/notice/detail',
           query: {no:no}
         });
       }

@@ -24,7 +24,7 @@
     </el-form>
     <div class="bottomBtns">
       <el-button type="primary" @click="onSubmit">등록</el-button>
-      <el-button type="primary">수정</el-button>
+      <el-button type="primary" @click="onModify">수정</el-button>
       <el-button type="primary" @click="onCancel">취소</el-button>
     </div>
   </section>
@@ -59,7 +59,7 @@
         })
         .then(res => {
           console.log('res = ', res);
-          if(res.data.ok) this.$router.push('/noticeList')
+          if(res.data.ok) this.$router.push('/notice/list')
         })
         .catch((res, err) => {
           console.log(res);
@@ -78,7 +78,7 @@
           type: 'warning'
         })
           .then(() => {
-            this.$router.push('/noticeList')
+            this.$router.push('/notice/list')
           })
           .catch((err) => {
             this.$message({
@@ -88,6 +88,26 @@
             console.log(err);
           })
       }
+    },
+    // 수정
+    onModify(){
+      console.log(this);
+      axios({
+        method: 'POST',
+        url : 'http://localhost:3000/notice/modify',
+        data : {form : this.form, no: this.no}
+      })
+      .then(res => {
+        console.log('res = ', res);
+        if(res.data.ok) this.$router.push('/notice/list')
+      })
+      .catch((res, err) => {
+        console.log(res);
+        alert('error!')
+      })
+      .finally(() => {
+        console.log(this.form);
+      })
     },
     created(){
       if(this.no){

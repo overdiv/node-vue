@@ -36,7 +36,8 @@
     data() {
       return {
         no : this.$route.query.no,
-        form: {} //form 초기화가 필요하다 data를 넣어주려면
+        form: {}, //form 초기화가 필요하다 data를 넣어주려면
+        imgFile: '',
       }
     },
     created() {

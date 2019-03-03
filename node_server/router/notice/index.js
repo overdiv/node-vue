@@ -30,6 +30,10 @@ router.get('/list', (req, res) => {
 
   console.log('[[[[ NOTICE LIST ]]]]')
 
+  console.log('req.params = ', req.query);
+
+  const search = req.query.search;
+
   connection.query(
             `SELECT 
              NOTICE_MNG_NO
@@ -41,11 +45,12 @@ router.get('/list', (req, res) => {
              , URDR
              , DATE_FORMAT(UPD_DT, "%Y-%m-%d %H:%i") UPD_DT
              FROM TB_NOTICE
+             WHERE SUBJ LIKE '%${search}%'
              ORDER BY NOTICE_MNG_NO DESC`
             , (err, rows) => {
     if(err) return res.status(401).json({err : '에러발생'})
     
-    if(rows.length){
+    // if (rows.length) {
       console.log(rows)
   
       const resData = {}
@@ -55,7 +60,7 @@ router.get('/list', (req, res) => {
 
       res.status(200)
       res.json(resData)
-    }
+    // }
 
   })
 });
@@ -64,17 +69,20 @@ router.post('/register', upload.single('image'), (req, res) => {
   
   console.log('[[[[[ NOTICE REGISTER]]]]]');
 
-  // console.log('req = ', req);
+  let oriImgName = '';
+  let phyImgName = '';
 
-  console.log('req.file = ', req.file);
+  if(req.file){
+    console.log('req.file = ', req.file)
 
-  const oriImgName = req.file.originalname;
+    oriImgName = req.file.originalname;
 
-  const phyImgName = req.file.filename;
+    phyImgName = req.file.filename;
 
-  console.log('oriImgName = ', oriImgName);
+    console.log('oriImgName = ', oriImgName);
 
-  console.log('phyImgName = ', phyImgName);
+    console.log('phyImgName = ', phyImgName);
+  }
 
   console.log('req.body.form = ', req.body.form);
 
@@ -87,8 +95,8 @@ router.post('/register', upload.single('image'), (req, res) => {
   // dpTp query err
   connection.query(`INSERT INTO TB_NOTICE
                     (
-                        NOTICE_TP,
-                        SUBJ
+                        NOTICE_TP
+                      , SUBJ
                       , INIT
                       , CONTS
                       , ORI_IMG_NAME
@@ -144,12 +152,18 @@ router.post('/modify', upload.single('image'), (req, res) => {
 
   const imgPath = `public/images/${phyImgName}`
 
+  console.log(form.subj);
+  console.log(form.conts);
+  console.log(form.dpTp);
+  console.log(form.init+'');
+  console.log(imgPath);
+
   // 파일이 있다는 뜻은 chnage가 되었다
   // 파일을 지우고 추가한다
   if (req.file) {
     console.log('======== is req.file =========');
 
-      if (phyImgName) fs.unlinkSync(imgPath)
+      if (phyImgName) fs.unlinkSync(imgPath);
 
       oriImgName = req.file.originalname;
       phyImgName = req.file.filename;
@@ -160,31 +174,31 @@ router.post('/modify', upload.single('image'), (req, res) => {
   if (!oriImgName && !req.file) {
     console.log('============ is not req.file, oriImgName ==============');
 
+    if (phyImgName) fs.unlinkSync(imgPath);
+
     oriImgName = '';
     phyImgName = '';
-    fs.unlinkSync(imgPath);
   }
 
-  connection.query(`UPDATE TB_NOTICE SET
-                        NOTICE_TP     = ?
-                      , SUBJ          = ?
-                      , INIT          = ?
-                      , CONTS         = ?
-                      , ORI_IMG_NAME  = ?
-                      , PHY_IMG_NAME  = ?
-                      , URDR          = 'admin'
-                      , UPD_DT,       = now()
-                      WHERE NOTICE_MNG_NO = ?
-                      AND USE_YN = '1'`
-                      [dpTp, subj, init+'',  conts, oriImgName, phyImgName, no],
-                      (err, rows) => {
+  const sql = connection.query(`UPDATE TB_NOTICE2 SET
+                        NOTICE_TP    = ?
+                      , SUBJ         = ?
+                      , INIT         = ?
+                      , CONTS        = ?
+                      , ORI_IMG_NAME = ?
+                      , PHY_IMG_NAME = ?
+                      , URDR         = 'admin'
+                      , UPD_DT       = now()
+                    WHERE NOTICE_MNG_NO = ?`
+                    , [dpTp, subj, `${init}`, conts, oriImgName, phyImgName, no]
+                    , (err, rows) => {
       
       console.log('rows =', err);
-
+      console.log(sql);
     if (err) return res.status(401).end(JSON.stringify({err: '에러발생'}))
 
     console.log('rows =', rows);
-
+                        
     if (rows.affectedRows > 0) {
 
       const resData = {}
@@ -195,9 +209,6 @@ router.post('/modify', upload.single('image'), (req, res) => {
       res.end(JSON.stringify(resData))
     }
   })
-
-  return
-
 })
 
 router.post('/delete', (req, res) => {

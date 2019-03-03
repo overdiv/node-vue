@@ -55,6 +55,7 @@
     components: {
       VueEditor
     },
+
     data(){
       return {
         form:{
@@ -69,11 +70,12 @@
         imgFile: ''
       }
     },
+
     methods:{
       onImgRemove(file) {
         console.log('====== onImgRemove ======');
         console.log(file);
-        console.log('====== onImgRemove ======');
+        console.log('======// onImgRemove ======');
         this.imgFile = '';
         this.form.oriImgName = '';
       },
@@ -135,49 +137,49 @@
           center: true,
           type: 'warning'
         })
-          .then(() => {
-            this.$router.push('/notice/list')
+        .then(() => {
+          this.$router.push('/notice/list')
+        })
+        .catch((err) => {
+          this.$message({
+            type: 'info',
+            message: '취소되었습니다'
           })
-          .catch((err) => {
-            this.$message({
-              type: 'info',
-              message: '취소되었습니다'
-            })
-            console.log(err);
-          })
-      }
+          console.log(err);
+        })
+      },
+      // 수정
+      onModify(){
+        console.log(this);
+        // axios({
+        //   method: 'POST',
+        //   url : 'http://localhost:3000/notice/modify',
+        //   data : {form : this.form, no: this.no}
+        // })
+
+        const formData = new FormData();
+
+        formData.append('form', JSON.stringify(this.form))
+        formData.append('no', this.no)
+
+        if(this.imgFile) formData.append('image', this.imgFile.raw);
+
+        noticeModify(formData)
+        .then(res => {
+          console.log('res = ', res);
+          if(res.data.ok) this.$router.push('/notice/list')
+        })
+        .catch(err => {
+          console.log(err);
+          alert('error!')
+        })
+        .finally(() => {
+          console.log(this.form);
+        })
+      },
+
     },
-    // 수정
-    onModify(){
-      console.log(this);
-      // axios({
-      //   method: 'POST',
-      //   url : 'http://localhost:3000/notice/modify',
-      //   data : {form : this.form, no: this.no}
-      // })
-
-      const formData = new FormData();
-
-      formData.append('form', JSON.stringify(this.form))
-      formData.append('no', this.no)
-
-      if(this.imgFile) {
-        formData.append('image', this.imgFile.raw)
-      }
-
-      noticeModify(formData)
-      .then(res => {
-        console.log('res = ', res);
-        if(res.data.ok) this.$router.push('/notice/list')
-      })
-      .catch((res, err) => {
-        console.log(res);
-        alert('error!')
-      })
-      .finally(() => {
-        console.log(this.form);
-      })
-    },
+    
     created(){
       if(this.no){
 
@@ -194,7 +196,6 @@
           this.form.subj = data.subj
           this.form.conts = data.conts
           this.form.dpTp = data.noticeTp
-          // this.form.init = data.init
 
           if (data.phyImgName) {
             this.fileList = [{
@@ -206,10 +207,10 @@
           this.form.phyImgName = data.phyImgName;
           this.form.oriImgName = data.oriImgName;
 
-          if(data.init !== ''){
+          if (data.init !== '') {
             this.form.init = data.init.split(',');
             console.log(this.form.init);
-          }else{
+          } else {
             this.form.init = []
           }
         })
@@ -221,6 +222,7 @@
         })
       }
     }
+
   }  
 </script>
 <style>

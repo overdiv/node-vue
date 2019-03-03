@@ -16,16 +16,26 @@ const routes = [
  {
    path: '/',
    component : Layout,
-   redirect : '/helloWorld',
-   name : 'HelloWorld',
-   hidden: true,
    children: [
-     {
-     path: 'helloworld',
-     component: () => import('@/views/helloworld')
+   {
+    path: 'registration',
+    name: 'registration',
+    component: () => import('@/views/registration/Registration')
    }
   ]
  },
+
+ {
+  path: '/',
+  component: Layout,
+  redirect: '/helloWorld',
+  name: 'HelloWorld',
+  hidden: true,
+  children: [{
+  path: 'helloworld',
+  component: () => import('@/views/HelloWorld')
+  }]
+},
 
  {
    path: '/notice',
@@ -34,7 +44,34 @@ const routes = [
      {
      path: 'list',
      name: 'NoticeList',
-     component: () => import('@/views/notice/NoticeList')
+     component: () => import('@/views/notice/NoticeList'),
+
+    //  beforeEnter: (to,from,next) => {
+    //   console.log('======    to     ======')
+    //   console.log(to)
+    //   console.log('======    to     ======')
+
+    //   console.log('======    from     ======')
+    //   console.log(from)
+    //   console.log('======    from     ======')
+    //   if (Cookies.get('token')) {
+
+    //     if (to.path === '/login') {
+    //       next({ path: `/` })
+    //     } else {
+    //       next()
+    //     }
+
+    //   } else {
+    //     if (to.path !== '/login') {
+    //       // next({path:'/login'})
+    //       next({path:`/login?redirect=${to.path}`})
+    //     } else {
+    //       next()
+    //     }
+    //   }
+    //  }
+
    },
    {
      hidden: true,

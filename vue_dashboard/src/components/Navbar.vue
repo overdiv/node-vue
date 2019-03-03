@@ -17,6 +17,9 @@
         <el-dropdown-item v-else divided>
           <span style="display:block;" @click="$router.push('/login')">Login</span>
         </el-dropdown-item>
+        <el-dropdown-item v-if="!isLogin" divided>
+          <span style="display:block;" @click="$router.push('/registration')">Join</span>
+        </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </el-menu>

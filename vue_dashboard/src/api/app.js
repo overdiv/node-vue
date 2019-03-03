@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { get } from 'http';
 
 const service = axios.create({
 	baseURL: process.env.BASE_API,
@@ -13,11 +14,12 @@ export const userLogin = (data) => { // export function userLogin(data) {
 	})
 }
 
-export const noticeList = () => {   
-  return service({
-      url: `/notice/list/`,
-      method: 'get',
-  })
+export const noticeList = (params) => {   
+  //return service({
+  //    url: `/notice/list/`,
+  //    method: 'get',
+  //})
+  return service.get('/notice/list', { params })
 }
 
 export const noticeDetail = (data) => {   

@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { mapActions,mappState, mapMutations } from 'vuex'
+import { mapActions,mapState, mapMutations } from 'vuex'
 export default {
  
   name: 'Login',
@@ -66,7 +66,7 @@ export default {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
-      loading: false,
+      // loading: false,
       pwdType: 'password',
       redirect: undefined
     }

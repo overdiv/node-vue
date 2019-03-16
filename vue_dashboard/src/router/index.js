@@ -19,7 +19,7 @@ const routes = [
    children: [
    {
     path: 'registration',
-    name: 'registration',
+    name: 'Registration',
     component: () => import('@/views/registration/Registration')
    }
   ]

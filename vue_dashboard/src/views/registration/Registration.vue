@@ -44,6 +44,7 @@ PC : 회원가입
 </template>
 
 <script>
+import { registration } from '@/api/app.js'
 export default {
 	data () {
         const validatePass2 = (rule, value, callback) => {
@@ -64,7 +65,7 @@ export default {
 				usermail: '',
 				password: '',
 				password2: '',
-				terms: []
+				terms: false
 			},
             rule: {
                 usermail: [
@@ -80,7 +81,7 @@ export default {
                     { validator: validatePass2, trigger: ['change', 'blur']}
                 ],
                 terms: [
-					{ type: 'array', required: true, message: '이용약관 동의 후 회원가입이 가능합니다.', transform: value => value.toString(), trigger: 'change' }
+					{ type: 'enum', enum: ['true'], required: true, message: '이용약관 동의 후 회원가입이 가능합니다.', transform: value => value.toString(), trigger: 'change' }
 				]
             }
 		}
@@ -91,7 +92,25 @@ export default {
 			console.log('==== 회원가입 ====');
 			this.$refs['form'].validate((valid) => {
 				if(valid){
-					console.log('벨류데이션 통과')
+                    console.log('벨류데이션 통과')
+                    
+                    this.registering = true
+
+                    registration({
+                        form: this.form
+                    })
+                    .then(res => {
+                        console.log('=== res ===');
+                        console.log(res);
+                        console.log('=== res ===');
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                    .finally(_ => {
+                        this.registering = false
+                    })
+
 				}else {
 					console.log('벨류데이션 미통과')
 				}

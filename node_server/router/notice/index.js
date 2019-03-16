@@ -180,7 +180,7 @@ router.post('/modify', upload.single('image'), (req, res) => {
     phyImgName = '';
   }
 
-  const sql = connection.query(`UPDATE TB_NOTICE2 SET
+  const sql = connection.query(`UPDATE TB_NOTICE SET
                         NOTICE_TP    = ?
                       , SUBJ         = ?
                       , INIT         = ?
@@ -238,26 +238,26 @@ router.post('/delete', (req, res) => {
     }
   })
 
-  // connection.query(`UPDATE TB_NOTICE SET
-  //                   USE_YN = '0',
-  //                   ORI_IMG_NAME = '',
-  //                   PHY_IMG_NAME = ''
-  //                   WHERE NOTICE_MNG_NO = ?`,
-  //                     [no],
-  //                     (err, rows) => {
+  connection.query(`UPDATE TB_NOTICE SET
+                     USE_YN = '0',
+                     ORI_IMG_NAME = '',
+                     PHY_IMG_NAME = ''
+                     WHERE NOTICE_MNG_NO = ?`,
+                       [no],
+                       (err, rows) => {
       
-  //   if (err) return res.status(401).end(JSON.stringify({err: '에러발생'}))
+     if (err) return res.status(401).end(JSON.stringify({err: '에러발생'}))
 
-  //   if (rows.affectedRows > 0) {
+     if (rows.affectedRows > 0) {
 
-  //     const resData = {}
+       const resData = {}
 
-  //     resData.insertId = rows.insertId
-  //     resData.ok = true
-  //     res.status(200)
-  //     res.end(JSON.stringify(resData))
-  //   }
-  // })
+       resData.insertId = rows.insertId
+       resData.ok = true
+       res.status(200)
+       res.end(JSON.stringify(resData))
+     }
+   })
 
 })
 

@@ -18,9 +18,9 @@
       </el-form-item>
     </el-form>
     <div class="bottomBtns">
-      <el-button type="primary" @click="$router.push('/notice/list')"> tempalte 안에서는 this를 생략가능하다 목록</el-button>
+      <el-button type="primary" @click="$router.push('/notice/list')">목록</el-button>
       <el-button type="primary" @click="onUpdate">수정</el-button>
-      <el-button type="primary">삭제</el-button>
+      <el-button type="primary" @click="onDelete">삭제</el-button>
     </div>
   </section>
 </template>

@@ -7,11 +7,12 @@ const service = axios.create({
 })
 
 export const userLogin = (data) => { // export function userLogin(data) {
-	return service({
-		url: '/login',
-		method: 'post',
-		data,						// data: data
-	})
+	//return service({
+	//	url: '/login',
+	//	method: 'post',
+	//	data,						// data: data
+  //})
+  return service.post('/login', data);
 }
 
 export const noticeList = (params) => {   
@@ -23,32 +24,40 @@ export const noticeList = (params) => {
 }
 
 export const noticeDetail = (data) => {   
-  return service({
-    url: `/notice/detail/${data}`,
-    method: 'get'
-  })
+  //return service({
+  //  url: `/notice/detail/${data}`,
+  //  method: 'get'
+  //})
+  return service.get(`/notice/detail/${data}`);
 }
 
 export const noticeDelete = (data) => {   
-  return service({
-    url: '/notice/delete',
-    method: 'post',
-    data
-  })
+  //return service({
+  //  url: '/notice/delete',
+  //  method: 'post',
+  //  data
+  //})
+  return service.post('/notice/delete', data);
 }
 
 export const noticeRegister = (data) => {   
-  return service({
-    url: '/notice/register',
-    method: 'post',
-    data
-  })
+  //return service({
+  //  url: '/notice/register',
+  //  method: 'post',
+  //  data
+  //})
+  return service.post('/notice/register', data);
 }
 
 export const noticeModify = (data) => {   
-  return service({
-    url: '/notice/modify',
-    method: 'post',
-    data
-  })
+  //return service({
+  //  url: '/notice/modify',
+  //  method: 'post',
+  //  data
+  //})
+  return service.post('/notice/modify', data);
+}
+
+export const registration = (data) => {
+  return service.post('/registration', data);
 }

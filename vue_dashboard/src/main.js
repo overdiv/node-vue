@@ -12,6 +12,18 @@ import store from './store/users'
 
 // 미들웨어 등록 - 전역에서 사용
 Vue.use(ElementUI, { locale })
+
+router.beforeEach((to, from, next) => {
+  console.log('from.path = ', from.path);
+  if (Cookies.get('token')) {
+    if (to.path === '/login') {
+      next({path:`${from.path}`})
+    } else {
+      next()
+    }
+  } 
+})
+
 /*
 router.beforeEach((to, from, next) => {
   console.log('======    to     ======')

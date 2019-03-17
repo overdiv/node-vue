@@ -3,8 +3,19 @@ import VueRouter from 'vue-router'
 // import PopupRegister from '@/views/popup/PopupRegister.vue'
 import Layout from '@/components/Layout.vue'
 import NotFound from '@/404.vue'
+import store from '@/store//users'
 
 Vue.use(VueRouter)
+
+const requireAuth = (to, from, next) => {
+  console.log(store)
+  console.log('store = ', store.state.user.id)
+  const loginPath = `/login?rPath=${encodeURIComponent(to.path)}`
+  const token = Cookies.get('token')
+  store.commit('SET_ID', token)
+  // token ? next() : next(loginPath)
+  store.state.user.id ? next() : next(loginPath)
+}
 
 const routes = [
  {
@@ -40,6 +51,7 @@ const routes = [
  {
    path: '/notice',
    component : Layout,
+   beforeEnter: requireAuth,
    children: [
      {
      path: 'list',

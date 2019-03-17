@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { userLogin } from '@/api/app.js'
+import { userLogin, setAuthHeader } from '@/api/app.js'
 
 Vue.use(Vuex)
 
@@ -16,7 +16,12 @@ const user = {
 	mutations: {
 		// 동기로직 공통 함수
 		SET_ID: (state, id) => {
+			if(!id) return;
 			state.id = id
+
+			Cookies.set('token', id, {expires:1})
+			setAuthHeader(id)
+
 		},
 		SET_LOADING: (state, loading) => {
 			state.loading = loading
@@ -38,10 +43,8 @@ const user = {
 					console.log(res);
 					console.log('==========  res  ==========')
 
-					commit('SET_ID', res.data.body.LOGIN_ID)
+					commit('SET_ID', res.data.body)
 
-					Cookies.set('token', res.data.body.LOGIN_ID, {expires:1})
-					
 				})
 				.catch(err => {
 						console.log(err);

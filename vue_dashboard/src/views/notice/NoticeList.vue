@@ -136,30 +136,30 @@
     mounted() {
       this.onList()
     },
-    beforeRouteEnter (to, from, next) {
-      console.log('======    to     ======')
-      console.log(to)
-      console.log('======    to     ======')
+    // beforeRouteEnter (to, from, next) {
+    //   console.log('======    to     ======')
+    //   console.log(to)
+    //   console.log('======    to     ======')
 
-      console.log('======    from     ======')
-      console.log(from)
-      console.log('======    from     ======')
-      if (Cookies.get('token')) {
+    //   console.log('======    from     ======')
+    //   console.log(from)
+    //   console.log('======    from     ======')
+    //   if (Cookies.get('token')) {
 
-        if (to.path === '/login') {
-          next({ path: `/` })
-        } else {
-          next()
-        }
+    //     if (to.path === '/login') {
+    //       next({ path: `/` })
+    //     } else {
+    //       next()
+    //     }
 
-      } else {
-        if (to.path !== '/login') {
-          // next({path:'/login'})
-          next({path:`/login?redirect=${to.path}`})
-        } else {
-          next()
-        }
-      }
-    }
+    //   } else {
+    //     if (to.path !== '/login') {
+    //       // next({path:'/login'})
+    //       next({path:`/login?redirect=${to.path}`})
+    //     } else {
+    //       next()
+    //     }
+    //   }
+    // }
   }
 </script>

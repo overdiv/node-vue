@@ -61,3 +61,7 @@ export const noticeModify = (data) => {
 export const registration = (data) => {
   return service.post('/registration', data);
 }
+
+export const setAuthHeader = token => {
+  axios.defaults.headers.common['Authorization'] = token ? `Bearer ${token}` : null;
+}

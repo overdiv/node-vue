@@ -7,7 +7,9 @@ const login = require('./login')
 
 const registration = require('./registration')
 
-router.use('/notice', notice)
+const auth = require('./auth')
+
+router.use('/notice',auth.returnAuth(), notice)
 
 router.use('/login', login)
 

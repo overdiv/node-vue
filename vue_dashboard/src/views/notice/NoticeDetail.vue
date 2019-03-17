@@ -52,7 +52,7 @@
         this.form = data
 
         if(data.phyImgName) {
-          this.imgFile = `http://localhost:3000/images/${data.phyImgName}`
+          this.imgFile = `http://52.78.112.224:3000/images/${data.phyImgName}`
         }
       })
       .catch(err =>{
